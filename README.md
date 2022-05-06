@@ -15,3 +15,5 @@ React / Next Js frontend
 
 
 
+Cartoonify tutorial:  https://www.geeksforgeeks.org/cartooning-an-image-using-opencv-python/  
+Flask documentation:  https://flask.palletsprojects.com/en/2.1.x/quickstart/
