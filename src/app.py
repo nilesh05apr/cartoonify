@@ -1,10 +1,13 @@
-from crypt import methods
-from urllib import response
-from flask import *
-app = Flask(__name__)
-from Cartoonizer import Cartoonizer
-import cv2
 import os
+from flask import *
+from PIL import Image
+from urllib import response
+from AnimeGanv2 import model
+
+
+app = Flask(__name__)
+
+
 UPLOAD_FOLDER = 'static/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -35,11 +38,25 @@ def success():
         if 'file' not in request.files:
             return redirect(request.url)
         f = request.files['file']
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
-        #print(f)
-        crt = Cartoonizer()
-        res = crt.render(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
-        cv2.imwrite(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], f.filename),res)
+        img = Image.open(f.stream).convert("RGB")
+        img.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+        #f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+        out_celeba, out_facev1, out_facev2, out_paprika = model(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+
+        out_celeba.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename))
+        out_facev1.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_facev1"+f.filename))
+        out_facev2.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_facev2"+f.filename))
+        out_paprika.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_paprika"+f.filename))
+
         original_image = os.path.join(app.config['UPLOAD_FOLDER'], f.filename)
-        cartoon_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], f.filename)
-    return render_template("success.html", name = f.filename,real = original_image,cartoon = cartoon_image)
+        celeba_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
+        facev1_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
+        facev2_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
+        paprika_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
+    
+    return render_template("success.html", name = f.filename,
+                            real = original_image,
+                            celeba = celeba_image,
+                            facev1=facev1_image,
+                            facev2=facev2_image,
+                            paprika=paprika_image)
