@@ -15,7 +15,7 @@ face2paint = torch.hub.load("bryandlee/animegan2-pytorch:main", "face2paint", si
 
 
 def model(img):
-    img = Image.open(img).convert("RGB")
+    # img = Image.open(img).convert("RGB")
     out_celeba = face2paint(model_celeba, img)
     out_facev1 = face2paint(model_facev1, img)
     out_facev2 = face2paint(model_facev2, img)

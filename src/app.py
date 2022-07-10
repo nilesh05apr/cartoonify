@@ -1,9 +1,11 @@
 import os
+import codecs
+import numpy as np
 from flask import *
 from PIL import Image
 from urllib import response
 from AnimeGanv2 import model
-
+from db import upload_cartoon_image, upload_real_image, get_real_image
 
 app = Flask(__name__)
 
@@ -38,10 +40,20 @@ def success():
         if 'file' not in request.files:
             return redirect(request.url)
         f = request.files['file']
+        real_image_id = upload_real_image(f,f.filename)
         img = Image.open(f.stream).convert("RGB")
-        img.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+        print(img.size)
+        print(real_image_id)
+        real_image = get_real_image(real_image_id)
+        #print(real_image)
+
+        # img.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
         #f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
-        out_celeba, out_facev1, out_facev2, out_paprika = model(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+        # out_celeba, out_facev1, out_facev2, out_paprika = model(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
+        out_celeba, out_facev1, out_facev2, out_paprika = model(img)
+        
+        # cartoon_image_id = upload_cartoon_image(out_celeba)
+        # print(cartoon_image_id)
 
         out_celeba.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename))
         out_facev1.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_facev1"+f.filename))
@@ -55,7 +67,7 @@ def success():
         paprika_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
     
     return render_template("success.html", name = f.filename,
-                            real = original_image,
+                            real = real_image,
                             celeba = celeba_image,
                             facev1=facev1_image,
                             facev2=facev2_image,
