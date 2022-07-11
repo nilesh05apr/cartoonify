@@ -1,5 +1,6 @@
 from ast import Bytes, Str
 import io
+from typing import Dict
 import gridfs
 import codecs
 import numpy as np
@@ -15,7 +16,7 @@ meta = mc.get_database('METADATA')
 r_fs = gridfs.GridFS(real_image_db)
 c_fs = gridfs.GridFS(cartton_image_db)
 
-def upload_real_image(image,filename):
+def upload_real_image(image: Image, filename: Str) -> id:
     _id = r_fs.put(data=image,name=filename)
     image = Image.open(image.stream).convert('RGB')
     metadata = {
@@ -26,7 +27,7 @@ def upload_real_image(image,filename):
     return _id
 
 
-def upload_cartoon_image(image_data):
+def upload_cartoon_image(image_data: Dict) -> id:
     _id = c_fs.put(data=image_data['image'],name=image_data['filename'])
     metadata = {
         "ImageId" : _id,
@@ -36,7 +37,7 @@ def upload_cartoon_image(image_data):
     return _id
 
 
-def get_real_image(_id):
+def get_real_image(_id:id) -> Str:
     image = r_fs.get(_id)
     # print("Image type real:{}".format(type(image)))
     base64_data = codecs.encode(image.read(),'base64')
@@ -45,7 +46,7 @@ def get_real_image(_id):
     return r_image
 
 
-def get_cartoon_image(_id):
+def get_cartoon_image(_id:id) -> Str:
     image = c_fs.get(_id)
     base64_data = codecs.encode(image.read(),'base64')
     c_image = base64_data.decode('utf-8')
