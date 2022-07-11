@@ -1,20 +1,18 @@
-import os
-import codecs
-import numpy as np
 from flask import *
 from PIL import Image
 from urllib import response
 from AnimeGanv2 import model
-from db import upload_cartoon_image, upload_real_image, get_real_image
+from os import environ as env
+from db import byte_to_base64_str,image_to_byte_array
 
 app = Flask(__name__)
 
 
-UPLOAD_FOLDER = 'static/uploads/'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-CARTOON_IMAGE_FOLDER = 'static/cartoons/'
-app.config['CARTOON_IMAGE_FOLDER'] = CARTOON_IMAGE_FOLDER
+
+app.config['UPLOAD_FOLDER'] = env['UPLOAD_FOLDER']
+app.config['MAX_CONTENT_LENGTH'] = int(env['MAX_CONTENT_LENGTH'])
+
+app.config['CARTOON_IMAGE_FOLDER'] = env['CARTOON_IMAGE_FOLDER']
 
 
 @app.route('/health')
@@ -39,36 +37,72 @@ def success():
     if request.method == 'POST':
         if 'file' not in request.files:
             return redirect(request.url)
+     
         f = request.files['file']
-        real_image_id = upload_real_image(f,f.filename)
+        # real_image_id = upload_real_image(f,f.filename)
         img = Image.open(f.stream).convert("RGB")
-        print(img.size)
-        print(real_image_id)
-        real_image = get_real_image(real_image_id)
-        #print(real_image)
+     
+        # print("Original Image shape: {}".format(img.size))
+        # print("real imgae id: {}".format(real_image_id))
+        # real_image = get_real_image(real_image_id)
+        real_image_byte = image_to_byte_array(img)
+        real_image = byte_to_base64_str(real_image_byte)
 
-        # img.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
-        #f.save(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
-        # out_celeba, out_facev1, out_facev2, out_paprika = model(os.path.join(app.config['UPLOAD_FOLDER'], f.filename))
         out_celeba, out_facev1, out_facev2, out_paprika = model(img)
-        
-        # cartoon_image_id = upload_cartoon_image(out_celeba)
-        # print(cartoon_image_id)
 
-        out_celeba.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename))
-        out_facev1.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_facev1"+f.filename))
-        out_facev2.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_facev2"+f.filename))
-        out_paprika.save(os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_paprika"+f.filename))
+        out_celeba_byte = image_to_byte_array(out_celeba)
+        # print("Output Image Shape: {}".format(out_celeba.size))
+        # out_celeba_data = dict({
+        #     "filename":"celeba_output.jpg",
+        #     "shape": np.asarray(out_celeba).shape,
+        #     "image": out_celeba_byte
+        # })
+        # out_celeba_id = upload_cartoon_image(out_celeba_data)
+        # print("Cartoon Image id: {}".format(out_celeba_id))
+        out_celeba_img = byte_to_base64_str(out_celeba_byte)
 
-        original_image = os.path.join(app.config['UPLOAD_FOLDER'], f.filename)
-        celeba_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
-        facev1_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
-        facev2_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
-        paprika_image = os.path.join(app.config['CARTOON_IMAGE_FOLDER'], "out_celeba"+f.filename)
+
+        out_facev1_byte = image_to_byte_array(out_facev1)
+        # print("Output Image Shape: {}".format(out_facev1.size))
+        # out_facev1_data = dict({
+        #     "filename":"facev1_output.jpg",
+        #     "shape": np.asarray(out_facev1).shape,
+        #     "image": out_facev1_byte
+        # })
+        # out_facev1_id = upload_cartoon_image(out_facev1_data)
+        # print("Cartoon Image id: {}".format(out_facev1_id))
+        out_facev1_img = byte_to_base64_str(out_facev1_byte)
+
+
+        out_facev2_byte = image_to_byte_array(out_facev2)
+        # print("Output Image Shape: {}".format(out_facev2.size))
+        # out_facev2_data = dict({
+        #     "filename":"facev2_output.jpg",
+        #     "shape": np.asarray(out_facev2).shape,
+        #     "image": out_facev2_byte
+        # })
+        # out_facev2_id = upload_cartoon_image(out_facev2_data)
+        # print("Cartoon Image id: {}".format(out_facev2_id))
+        out_facev2_img = byte_to_base64_str(out_facev2_byte)
+
+
+        out_paprika_byte = image_to_byte_array(out_paprika)
+        # print("Output Image Shape: {}".format(out_paprika.size))
+        # out_paprika_data = dict({
+        #     "filename":"paprika_output.jpg",
+        #     "shape": np.asarray(out_paprika).shape,
+        #     "image": out_paprika_byte
+        # })
+        # out_paprika_id = upload_cartoon_image(out_paprika_data)
+        # print("Cartoon Image id: {}".format(out_paprika_id))
+        # out_paprika_img = get_cartoon_image(out_paprika_id)
+        out_paprika_img = byte_to_base64_str(out_paprika_byte)
+
+
     
     return render_template("success.html", name = f.filename,
                             real = real_image,
-                            celeba = celeba_image,
-                            facev1=facev1_image,
-                            facev2=facev2_image,
-                            paprika=paprika_image)
+                            celeba = out_celeba_img,
+                            facev1 = out_facev1_img,
+                            facev2 = out_facev2_img,
+                            paprika = out_paprika_img)
