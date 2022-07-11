@@ -14,14 +14,26 @@
     <title>Upload</title>
 </head>
 <body style="background-color: #d2f7e5;">
-    <form action="/success" method="POST" enctype="multipart/form-data">
-        <div class="container-sm overflow-hidden mx-auto p-3">
-            <label for="formFileLg" class="form-label display-6">Large Image Input</label>
-            <input class="form-control form-control-lg" id="formFileLg" type="file" name="file">
-            <div class="mx-auto p-3">
-                <button type="submit" class="btn btn-outline-success" value="upload">Upload</button>
-            </div>    
+      <div class="border-success">
+        <div class="container overflow-hidden p-3">
+            <div class="row gy-5">
+                <div class="col-6">
+                    <div class="shadow-lg card" style="background-color: #e3f2fd;">
+                        <form action="/success" method="POST" enctype="multipart/form-data" >
+                            <div class="container-sm overflow-hidden mx-auto p-3">
+                                <label for="formFileLg" class="form-label display-6">Large Image Input</label>
+                                <input class="form-control form-control-lg" id="formFileLg" type="file" name="file">
+                                <div class="mx-auto p-3">
+                                    <button type="submit" class="btn btn-outline-success" value="upload">Upload</button>
+                                </div>    
+                            </div>
+                        </form>                    
+                    </div>            
+                </div>
+            </div>
         </div>
-    </form>
+      </div>
+
+
 </body>
 </html>
