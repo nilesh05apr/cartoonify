@@ -15,6 +15,7 @@ app.config['MAX_CONTENT_LENGTH'] = int(env['MAX_CONTENT_LENGTH'])
 app.config['CARTOON_IMAGE_FOLDER'] = env['CARTOON_IMAGE_FOLDER']
 
 
+
 @app.route('/health')
 def health():
     stat =  {
@@ -25,12 +26,13 @@ def health():
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("upload.html")
 
 
 @app.route('/upload')
 def upload():
     return render_template("upload.html")
+
 
 @app.route('/success',methods=['POST'])
 def success():

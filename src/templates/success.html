@@ -1,30 +1,93 @@
-<html>  
-<head>  
-<title>success</title>  
-</head>  
-<body>  
-<p>File uploaded successfully</p> 
-<p>{{ name }}</p>
-<p>Real Image</p>
-<br>
-<img height="50%" width="50%" src="data:image/png;base64, {{ real }}" alt="Real Image">
-<br>
-<p>Cartoonified Image</p>
-<br>
-<img src="data:image/png;base64, {{ celeba }}" alt="Cartoonified Image"> 
-<br>
-<br>
-<img src="data:image/png;base64, {{ facev1 }}" alt="Cartoonified Image"> 
-<br>
-<br>
-<img src="data:image/png;base64, {{ facev2 }}" alt="Cartoonified Image"> 
-<br>
-<br>
-<img src="data:image/png;base64, {{ paprika }}" alt="Cartoonified Image"> 
-<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous"> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+    crossorigin="anonymous"></script>
 
-<button><a href="/upload">Upload again</a></button>
-<br>
-<button><a href="/">HomePage</a></button>
-</body>  
+    <title>Sucess</title>
+</head>
+<body style="background-color: #d2f7e5;">
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <div class="p-3">
+            <a class="navbar-brand active p-3" aria-current="page" href="/"><h1 class="display-6 p-3">Home</h1></a>
+        </div>
+    </nav>
+    <div class="container-sm overflow-hidden mx-auto p-3">
+        <div class="row gy-5 mx-auto">
+            <div class="col-6 mx-auto">
+                <div class="shadow-lg p-3 border bg-lght">
+                    <div class="shadow-lg card mb-3">
+                        <div class="card-body shadow-lg">
+                            <h5 class="card-title text-center display-5">Input Image</h5>
+                        </div> 
+                        <div class="ratio ratio-4x3 p-3">
+                            <img class="rounded" src="data:image/png;base64, {{ real }}" 
+                            class="shadow-lg img-fluid rounded w-50 h-50  d-block" alt="real Image">   
+                        </div> 
+                    </div>    
+                </div>
+            </div>        
+        </div>
+    </div>            
+
+    <div class="container overflow-hidden p-3">
+        <div class="row gy-5">
+          <div class="col-6">
+            <div class="p-3 border bg-light">            
+                <div class="shadow-lg card">
+                    <img src="data:image/png;base64, {{ celeba }}" 
+                    class="rounded mx-auto px-auto d-block" alt="celeba output" >
+                    <div class="card-body">
+                      <h5 class="card-title">Celeba Output</h5>
+                      <a href="data:image/png;base64, {{ celeba }}" class="btn btn-info" download="celeba_out">Download</a>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border bg-light">
+                <div class="shadow-lg card">
+                    <img src="data:image/png;base64, {{ facev1 }}" 
+                    class="rounded mx-auto px-auto d-block" alt="Facev1 output">
+                    <div class="card-body">
+                      <h5 class="card-title">Facev1 Output</h5>
+                      <a href="data:image/png;base64, {{ facev1 }}" class="btn btn-info" download="facev1_out">Download</a>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border bg-light">
+                <div class="shadow-lg card">
+                    <img src="data:image/png;base64, {{ facev2 }}" 
+                    class="rounded mx-auto px-auto d-block" alt="Facev2 output">
+                    <div class="card-body">
+                      <h5 class="card-title">Facev2 Output</h5>
+                      <a href="data:image/png;base64, {{ facev2 }}" class="btn btn-info" download="facev2_out">Download</a>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border bg-light">
+                <div class="shadow-lg card">
+                    <img src="data:image/png;base64, {{ paprika }}"
+                     class="rounded mx-auto px-auto d-block" alt="Paprika output">
+                    <div class="card-body">
+                      <h5 class="card-title">Paprika Output</h5>
+                      <a href="data:image/png;base64, {{ paprika }}" class="btn btn-info" download="paprika_out">Download</a>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
 </html>
