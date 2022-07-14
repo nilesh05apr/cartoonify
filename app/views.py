@@ -1,11 +1,13 @@
 from flask import *
+from app import app
 from PIL import Image
 from urllib import response
-from AnimeGanv2 import model
+#from AnimeGanv2 import model
 from os import environ as env
-from db import byte_to_base64_str,image_to_byte_array
+from .AnimeGanv2 import model
+from .db import byte_to_base64_str,image_to_byte_array
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 
 
