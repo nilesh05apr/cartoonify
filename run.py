@@ -1,4 +1,6 @@
 from app import app
+from os import environ as env
 
 if __name__ == '__main__':
-    app.run(debug=False,port=5000)
+    port = 5000 | env["PORT":5000]
+    app.run(debug=False,host='0.0.0.0',port=port)
