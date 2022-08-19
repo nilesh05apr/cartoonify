@@ -8,10 +8,10 @@ from .helpers.helper import byte_to_base64_str,image_to_byte_array
 
 
 
-app.config['UPLOAD_FOLDER'] = env['UPLOAD_FOLDER']
-app.config['MAX_CONTENT_LENGTH'] = int(env['MAX_CONTENT_LENGTH'])
+#app.config['UPLOAD_FOLDER'] = env['UPLOAD_FOLDER']
+#app.config['MAX_CONTENT_LENGTH'] = int(env['MAX_CONTENT_LENGTH'])
 
-app.config['CARTOON_IMAGE_FOLDER'] = env['CARTOON_IMAGE_FOLDER']
+#app.config['CARTOON_IMAGE_FOLDER'] = env['CARTOON_IMAGE_FOLDER']
 
 
 
