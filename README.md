@@ -3,7 +3,7 @@
 
 A simple webapp to play with images.  
 Cartoonify your images!  
-
+live webapp: https://cfiy.herokuapp.com/  
 
 To run:  
 - clone the repo  
